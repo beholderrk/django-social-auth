@@ -6,7 +6,8 @@ Notes:
       token back.
 """
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth import login, REDIRECT_FIELD_NAME
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from ecko.core.monkeys import lfs_login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -106,7 +107,7 @@ def complete_process(request, backend, *args, **kwargs):
         if getattr(user, 'is_active', True):
             # catch is_new flag before login() might reset the instance
             is_new = getattr(user, 'is_new', False)
-            login(request, user)
+            lfs_login(request, user)
             # user.social_user is the used UserSocialAuth instance defined
             # in authenticate process
             social_user = user.social_user
